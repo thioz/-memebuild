@@ -1,0 +1,58 @@
+.builder-layer{
+	border:1px solid #cecece;
+	margin: 2px;
+	padding: 5px;
+}
+
+.us-select{
+	position: relative;
+	border:1px solid #cecece;
+	height: 30px;
+}
+
+.us-select .us-select-options{
+	position: absolute;
+	z-index: 100;
+	top:30px;
+	width: 200px;
+	border:1px solid #cecece;
+	background: #ffffff;
+	 
+}
+
+.clr-preview{
+	width: 20px;
+	height: 20px;
+	border:1px solid #cecece;
+}
+
+#main{
+	position: relative;
+}
+
+#builder{
+	border:1px solid #cecece;
+}
+
+#imgbrowser{
+	position: absolute;
+	z-index: 1000;
+	top:0px;
+	left: 0px;
+}
+
+#imgbrowser-content{
+	height: 100%;
+}
+
+#imgbrowser-fade{
+	position: fixed;
+	z-index: 900;
+	top:0px;
+	left: 0px;
+	background-color: rgba(0,0,0,.7);
+}
+
+.dropdown-menu{
+	display: block;
+}

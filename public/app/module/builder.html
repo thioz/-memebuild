@@ -1,0 +1,139 @@
+<div id="imgbrowser" ng-controller="ImagebrowserController" ng-show="imgBrowserOpen == true">
+	<div class="panel panel-default" id="imgbrowser-content">
+		<div class="panel-heading">
+			<div class="pull-right"><span ng-click="closeImageBrowser()">Close</span></div>
+			Select image</div>
+		<div class="panel-body">
+			<div class="col-lg-12">
+				<div class="col-lg-3" ng-repeat="img in images">
+					<img ng-src="/images/preview/{{img.id}}?h=100" class="" ng-click="selectImage(img.id)"  />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="imgbrowser-fade" ng-show="imgBrowserOpen == true"></div>
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="">Memebuilder 1.0 </a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li><a href="">About</a></li>
+				<li><a href="">Contact</a></li>
+				<li class="dropdown">
+					<a href  class="dropdown-toggle" ng-click="toggleMenu()" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Add <span class="caret"></span></a>
+					<ul class="dropdown-menu" ng-show="menuActive == true">
+						<li><a href  ng-click="addImage()">Image</a></li>
+						<li><a href  ng-click="addTextField()">Text</a></li>
+					</ul>
+				</li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href ng-click="sendImage()">Save</a></li>
+				<li><a href ng-click="clearImage()">Clear</a></li>
+			</ul>
+		</div><!--/.nav-collapse -->
+	</div><!--/.container-fluid -->
+</nav>
+
+<div class="col-lg-8">
+	<div class="form-group form-inline">
+		<label class="control-label">Image size</label>
+		<select class="form-control" ng-model="imageSize" ng-options="size as size.name for size in canvasSizes"></select>
+		<button class="btn btn-sm btn-primary" ng-click="initBuilder()">Set Size</button>
+	</div>
+
+	<canvas id="builder" width="500" height="500"></canvas>
+
+</div>
+<div class="col-lg-4">
+
+	<div class="col-lg-12"  ng-repeat="layer in layers| orderBy:'z':true">
+		<div class=" panel panel-default" ng-if="layer.type == 'image'">
+			<div class="panel-heading">
+				<div class="pull-right">
+					<button class="btn btn-xs btn-default" ng-click="deleteLayer(layer)">delete</button>
+					<button class="btn btn-xs btn-default" ng-click="moveLayerDown(layer)">up</button>
+					<button class="btn btn-xs btn-default" ng-click="moveLayerUp(layer)">down</button>
+				</div>
+				{{layer.src}}
+
+			</div>
+			<div class="panel-body">
+
+				<button class="btn btn-xs btn-default" ng-click="layerSizeChange(layer, 10)">Larger</button>
+				<button class="btn btn-xs btn-default" ng-click="layerSizeChange(layer, -10)">Smaller</button>
+
+				<div class="form-group">
+					<label class="control-label">size:</label>
+					{{layer.w}}x{{layer.h}}
+				</div>
+
+
+				<img ng-src="/images/preview/{{layer.id}}?w=60" class="img-responsive"/>
+
+			</div>
+		</div>
+		<div class=" panel  panel-default" ng-if="layer.type == 'text'">
+			<div class="panel-heading">
+				<div class="pull-right">
+					<button class="btn btn-xs btn-default" ng-click="deleteLayer(layer)">delete</button>
+					<button class="btn btn-xs btn-default" ng-click="moveLayerUp(layer)">up</button>
+					<button class="btn btn-xs btn-default" ng-click="toggleCollapsed(layer)"><i class="glyphicon" ng-class="{'glyphicon-collapse-down':layer.collapsed == true,'glyphicon-collapse-up': layer.collapsed == false}"></i></button>
+				</div>
+				{{layer.text}}
+			</div>
+			<div class="panel-body col-lg-12" ng-show="layer.collapsed == false">
+				<div class="col-lg-12">
+					<div class="form-group">
+						<label class="control-label">Font</label>
+						<select class="form-control" ng-model="layer.font" ng-options="fnt.value as fnt.name for fnt in fonts" ng-change="memeUpdate()"></select>
+					</div>
+
+				</div>
+				<div class="col-lg-6">
+					<div class="form-group ">
+						<label class="control-label">Size</label>
+						<select class="form-control" ng-model="layer.fontSize" ng-options="size.id as size.name for size in fontSizes" ng-change="memeUpdate()"></select>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="form-group ">
+						<label class="control-label">Color</label>
+						<select class="form-control" ng-model="layer.color" ng-options="clr.value as clr.name for clr in fontColors" ng-change="memeUpdate()"></select>
+
+					</div>
+				</div>
+				<div class="col-lg-6">
+
+					<div class="form-group ">
+						<label class="control-label">StrokeColor</label>
+						<select  class="form-control"  ng-model="layer.strokeColor" ng-options="clr.value as clr.name for clr in strokeColors" ng-change="memeUpdate()"></select>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="form-group ">
+						<label class="control-label">Stroke Width</label>
+						<select  class="form-control"  ng-model="layer.strokeWidth" ng-options="sw.id as sw.name for sw in strokeWidths" ng-change="memeUpdate()"></select>
+					</div>
+				</div>
+				<div class="col-lg-12">
+
+					<div class="form-group">
+						<label class="control-label">Text</label>
+						<input type="text"  class="form-control" id="txtlayer_{{layer.z}}"  ng-model="layer.text" ng-change="memeUpdate()"/>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
