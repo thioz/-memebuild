@@ -30,11 +30,13 @@
 		<script src="/app/lib/imagepreview.js"></script>
 		<script src="/app/lib/memebuilder.js"></script>
 		<script src="/app/directive/uberselect.js"></script>
+		<script src="/app/directive/filemodel.js"></script>
 		
 		
 		<script src="/app/module/main.controller.js"></script>
 		<script src="/app/module/builder.controller.js"></script>
 		<script src="/app/module/imagebrowser.controller.js"></script>
+		<script src="/app/module/gallery.controller.js"></script>
 
   </body>
 </html>

@@ -14,8 +14,11 @@ Route::get('/',['uses' => 'HomeController@index']);
 
 Route::get('/images',['uses' => 'ImageController@index']);
 Route::get('/images/preview/{id?}',['uses' => 'ImageController@preview']);
+Route::get('/images/gallery',['uses' => 'ImageController@gallery']);
+Route::get('/images/gallery/{id}',['uses' => 'ImageController@galleryimg']);
 Route::get('/images/get/{id?}',['uses' => 'ImageController@getimage']);
 Route::post('/images/save',['uses' => 'ImageController@saveAction']);
+Route::post('/images/upload',['uses' => 'ImageController@uploadAction']);
 Route::get('/meme/{id}',['uses' => 'ImageController@getmemeAction']);
 Route::get('/res',['uses' => 'HomeController@responsiveAction']);
 

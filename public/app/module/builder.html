@@ -2,8 +2,12 @@
 	<div class="panel panel-default" id="imgbrowser-content">
 		<div class="panel-heading">
 			<div class="pull-right"><span ng-click="closeImageBrowser()">Close</span></div>
-			Select image</div>
+			Select image
+		</div>
 		<div class="panel-body">
+			<div class="col-lg-12">
+				<input type="file" file-model="imgupload"/><button ng-click="uploadFile()">laal</button>
+			</div>
 			<div class="col-lg-12">
 				<div class="col-lg-3" ng-repeat="img in images">
 					<img ng-src="/images/preview/{{img.id}}?h=100" class="" ng-click="selectImage(img.id)"  />
@@ -26,8 +30,8 @@
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li><a href="">About</a></li>
-				<li><a href="">Contact</a></li>
+				<li><a href="/#/gallery">Hall of shame</a></li>
+ 
 				<li class="dropdown">
 					<a href  class="dropdown-toggle" ng-click="toggleMenu()" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Add <span class="caret"></span></a>
 					<ul class="dropdown-menu" ng-show="menuActive == true">
@@ -36,10 +40,14 @@
 					</ul>
 				</li>
 			</ul>
+
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href ng-click="sendImage()">Save</a></li>
 				<li><a href ng-click="clearImage()">Clear</a></li>
 			</ul>
+			<ul class="nav navbar-nav navbar-right" ng-show="memeUrl">
+				<li><a href="{{memeUrl}}" target="_blank">Show Image</a></li>
+			</ul>			
 		</div><!--/.nav-collapse -->
 	</div><!--/.container-fluid -->
 </nav>
