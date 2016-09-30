@@ -15,7 +15,7 @@ class Creatememetable extends Migration
 		Schema::create('meme', function (Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('image_id');
+			$table->string('filename',255);
 			$table->integer('width');
 			$table->integer('height');
 			$table->timestamps();
