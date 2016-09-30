@@ -29,8 +29,11 @@
 		<script src="/app/service/api-service.js"></script>
 		<script src="/app/lib/imagepreview.js"></script>
 		<script src="/app/lib/memebuilder.js"></script>
+		<script src="/app/lib/toolbox.js"></script>
 		<script src="/app/directive/uberselect.js"></script>
 		<script src="/app/directive/filemodel.js"></script>
+		<script src="/app/directive/cpicker.js"></script>
+		<script src="/app/directive/slidercontrol.js"></script>
 		
 		
 		<script src="/app/module/main.controller.js"></script>

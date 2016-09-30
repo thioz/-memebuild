@@ -4,6 +4,7 @@ function MemeBuilder(cnv) {
 	this.width = this.canvas.width;
 	this.height = this.canvas.height;
 	this.layers = [];
+	this.activeLayer;
 
 }
 
@@ -14,10 +15,13 @@ MemeBuilder.prototype = {
 		layer.z = z;
 		this.layers.push(layer);
 		
+		
 		layer.setBuilder(this);
+		this.setActiveLayer(layer);
 		if(redraw){
 			this.draw();
 		}
+		
 		return layer;
 	},
 	deleteLayer:function(l){
@@ -76,6 +80,13 @@ MemeBuilder.prototype = {
 		layer.z=tZ;
 		this.draw();
 		
+	},
+	setActiveLayer:function(layer){
+		if(this.activeLayer){
+			this.activeLayer.collapsed=true;
+		}
+		this.activeLayer=layer;
+		layer.collapsed=false;		
 	}
 
 };
@@ -122,6 +133,9 @@ ImageMemeLayer.prototype = {
 	setBuilder: function (b) {
 		this.builder = b;
 	},
+	getCtx:function(){
+		return this.builder.ctx;
+	},
 	setTargetWidth: function (w) {
 		this.targetW = w;
 		this.builder.draw();
@@ -157,6 +171,36 @@ ImageMemeLayer.prototype = {
 
 	}
 };
+function DrawMemeLayer() {
+	this.x = 0;
+	this.y = 0;
+	this.w;
+	this.h;
+	this.img = document.createElement('canvas');
+	this.ctx = this.img.getContext('2d');
+	this.type = 'draw';
+	this.active=false;
+	this.loaded=false;
+	this.collapsed=true;
+	this.z=0;
+	this.builder;
+}
+
+DrawMemeLayer.prototype = {
+	setBuilder: function (b) {
+		this.builder = b;
+		this.w=b.canvas.width;
+		this.img.width=b.canvas.width;
+		this.img.height=b.canvas.height;
+		this.h=b.canvas.height;
+	},
+	getCtx:function(){
+		return this.ctx;
+	},
+	draw: function (ctx) {
+		ctx.drawImage(this.img,this.x,this.y);
+	}
+};
 
 function TextMemeLayer(){
 	this.text = 'Type Here !';
@@ -181,6 +225,9 @@ function TextMemeLayer(){
 TextMemeLayer.prototype = {
 	setBuilder: function (b) {
 		this.builder = b;
+	},
+	getCtx:function(){
+		return this.builder.ctx;
 	},
 	draw: function (ctx) {
 		ctx.font = ''+this.fontSize+'px '+this.font;

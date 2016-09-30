@@ -12,6 +12,7 @@
 */
 Route::get('/',['uses' => 'HomeController@index']);
 
+Route::get('/pixel',['uses' => 'PixelController@index']);
 Route::get('/images',['uses' => 'ImageController@index']);
 Route::get('/images/preview/{id?}',['uses' => 'ImageController@preview']);
 Route::get('/images/gallery',['uses' => 'ImageController@gallery']);

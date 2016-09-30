@@ -6,7 +6,13 @@
 		</div>
 		<div class="panel-body">
 			<div class="col-lg-12">
-				<input type="file" file-model="imgupload"/><button ng-click="uploadFile()">laal</button>
+				<div class="form-group col-lg-2">
+					<label class="control-label">Upload</label>
+					<input type="file" file-model="imgupload"/>
+				</div>
+				<div class="form-group col-lg-2">
+						<button class="btn btn-default" ng-click="uploadFile()">upload</button>
+				</div>
 			</div>
 			<div class="col-lg-12">
 				<div class="col-lg-3" ng-repeat="img in images">
@@ -31,12 +37,13 @@
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
 				<li><a href="/#/gallery">Hall of shame</a></li>
- 
+
 				<li class="dropdown">
 					<a href  class="dropdown-toggle" ng-click="toggleMenu()" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Add <span class="caret"></span></a>
 					<ul class="dropdown-menu" ng-show="menuActive == true">
 						<li><a href  ng-click="addImage()">Image</a></li>
 						<li><a href  ng-click="addTextField()">Text</a></li>
+
 					</ul>
 				</li>
 			</ul>
@@ -52,7 +59,7 @@
 	</div><!--/.container-fluid -->
 </nav>
 
-<div class="col-lg-8">
+<div class="col-lg-6">
 	<div class="form-group form-inline">
 		<label class="control-label">Image size</label>
 		<select class="form-control" ng-model="imageSize" ng-options="size as size.name for size in canvasSizes"></select>
@@ -62,20 +69,22 @@
 	<canvas id="builder" width="500" height="500"></canvas>
 
 </div>
+
 <div class="col-lg-4">
 
 	<div class="col-lg-12"  ng-repeat="layer in layers| orderBy:'z':true">
-		<div class=" panel panel-default" ng-if="layer.type == 'image'">
+		<div class=" panel" ng-class="{'panel-default':layer.collapsed == true,'panel-primary':layer.collapsed == false}" ng-if="layer.type == 'image'">
 			<div class="panel-heading">
 				<div class="pull-right">
 					<button class="btn btn-xs btn-default" ng-click="deleteLayer(layer)">delete</button>
 					<button class="btn btn-xs btn-default" ng-click="moveLayerDown(layer)">up</button>
 					<button class="btn btn-xs btn-default" ng-click="moveLayerUp(layer)">down</button>
 				</div>
-				{{layer.src}}
+				<span ng-click="setActiveLayer(layer)">{{layer.src}}</span>
+
 
 			</div>
-			<div class="panel-body">
+			<div class="panel-body" ng-show="layer.collapsed == false">
 
 				<button class="btn btn-xs btn-default" ng-click="layerSizeChange(layer, 10)">Larger</button>
 				<button class="btn btn-xs btn-default" ng-click="layerSizeChange(layer, -10)">Smaller</button>
@@ -90,14 +99,35 @@
 
 			</div>
 		</div>
-		<div class=" panel  panel-default" ng-if="layer.type == 'text'">
+		<div class=" panel"  ng-class="{'panel-default':layer.collapsed == true,'panel-primary':layer.collapsed == false}" ng-if="layer.type == 'draw'">
 			<div class="panel-heading">
 				<div class="pull-right">
 					<button class="btn btn-xs btn-default" ng-click="deleteLayer(layer)">delete</button>
 					<button class="btn btn-xs btn-default" ng-click="moveLayerUp(layer)">up</button>
 					<button class="btn btn-xs btn-default" ng-click="toggleCollapsed(layer)"><i class="glyphicon" ng-class="{'glyphicon-collapse-down':layer.collapsed == true,'glyphicon-collapse-up': layer.collapsed == false}"></i></button>
 				</div>
-				{{layer.text}}
+				<span ng-click="setActiveLayer(layer)">draw {{layer.z}}</span>
+			</div>
+			<div class="panel-body col-lg-12" ng-show="layer.collapsed == false">
+
+				<div class="form-group">
+					<label class="control-label">size:</label>
+					{{layer.w}}x{{layer.h}}
+				</div>
+				<div class="form-group">
+					<label class="control-label">pos:</label>
+					{{layer.x}}x{{layer.y}}
+				</div>				
+			</div>
+		</div>
+		<div class=" panel"  ng-class="{'panel-default':layer.collapsed == true,'panel-primary':layer.collapsed == false}" ng-if="layer.type == 'text'">
+			<div class="panel-heading">
+				<div class="pull-right">
+					<button class="btn btn-xs btn-default" ng-click="deleteLayer(layer)">delete</button>
+					<button class="btn btn-xs btn-default" ng-click="moveLayerUp(layer)">up</button>
+					<button class="btn btn-xs btn-default" ng-click="toggleCollapsed(layer)"><i class="glyphicon" ng-class="{'glyphicon-collapse-down':layer.collapsed == true,'glyphicon-collapse-up': layer.collapsed == false}"></i></button>
+				</div>
+				<span ng-click="setActiveLayer(layer)">{{layer.text}}</span>
 			</div>
 			<div class="panel-body col-lg-12" ng-show="layer.collapsed == false">
 				<div class="col-lg-12">

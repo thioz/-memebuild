@@ -3,15 +3,12 @@
 		'$scope', '$routeParams', 'ApiService', '$timeout', function ($scope, $routeParams, apiService, $timeout) {
 			var builder;
 			var canvas;
+			$scope.toolbox;
 
 			$scope.layers;
 			$scope.menuActive=false;
-			$scope.dragLayer;
-			$scope.actLayer;
 			$scope.imageSize;
 			$scope.imgBrowserOpen = false;
-			$scope.dragOffset = {x: 0, y: 0};
-			$scope.dragging = false;
 			$scope.canvasSizes = [
 				{name: '500x400', w: 500, h: 400},
 				{name: '800x600', w: 800, h: 600},
@@ -60,47 +57,18 @@
 
 				canvas = document.getElementById('builder');
 				builder = new MemeBuilder(canvas);
-				document.addEventListener('mouseup', function (e) {
-					$scope.dragLayer = undefined;
+				$scope.toolbox = new Toolbox(builder);
+				$scope.toolbox.registerTool('move',new MoveTool());
+				$scope.toolbox.setActiveTool('move');
 
-				});
-
-				canvas.addEventListener('mousemove', function (e) {
-					var cX = e.offsetX;
-					var cY = e.offsetY;
-					if ($scope.dragLayer) {
-						$scope.dragLayer.x = cX - $scope.dragOffset.x;
-						$scope.dragLayer.y = cY - $scope.dragOffset.y;
-						builder.draw();
-					}
-
-				});
-				canvas.addEventListener('mousedown', function (e) {
-					if (!builder) {
-						return;
-					}
-					var cX = e.offsetX;
-					var cY = e.offsetY;
-					var layer = builder.getLayerAt(cX, cY);
-					if ($scope.actLayer) {
-						$scope.actLayer.collapsed = true;
-					}
-					if (layer) {
-
-						$scope.dragOffset.x = cX - layer.x;
-						$scope.dragOffset.y = cY - layer.y;
-						$scope.dragLayer = layer;
-						$scope.actLayer = layer;
-						$timeout(function () {
-							layer.collapsed = false;
-
-						}, 100);
-
-					}
-				});
-
+				
+				
 				$scope.imageSize = $scope.canvasSizes[0];
 				$scope.initBuilder();
+			};
+			
+			$scope.setActiveLayer=function(layer){
+				builder.setActiveLayer(layer);
 			};
 
 			$scope.initBuilder = function () {
@@ -153,6 +121,19 @@
 
 			};
 
+			$scope.addDrawLayer = function () {
+				
+				$scope.menuActive=false;
+				var layer = new DrawMemeLayer();
+				builder.addLayer(layer, true);
+				if ($scope.actLayer) {
+					$scope.actLayer.collapsed = true;
+				}
+				layer.collapsed = false;
+				$scope.actLayer = layer;
+				builder.draw();
+				
+			};
 			$scope.addTextField = function () {
 				$scope.menuActive=false;
 				var txtLayer = new TextMemeLayer();

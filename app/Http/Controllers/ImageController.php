@@ -2,27 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Model\Image;
+use App\Model\ImageModel;
 use App\Model\Meme;
 use Illuminate\Http\Request;
-use Voodoo\Resizer;
-use Voodoo\VoodooImage;
 use function response;
 use function storage_path;
+
 
 class ImageController extends BaseController
 {
 	public function index(Request $req)
 	{
-		$images = Image::get();
+		$images = ImageModel::get();
 		return response()->json($images);
 	}
 
 	public function getimage(Request $req, $id = false)
 	{
-		$model = Image::find($id);
-		$image = new VoodooImage(storage_path('image') . '/' . $model->storagefilename);
-		$image->output();
+ 
+
+		$model = ImageModel::find($id);
+		$image =  \Image::make(storage_path('image') . '/' . $model->storagefilename);
+		
+		
+		return $image->response();;
+		
 	}
 
 	public function preview(Request $req, $id = false)
@@ -31,30 +35,29 @@ class ImageController extends BaseController
 		$height = $req->input('h', false);
 		if ($id)
 		{
-			$model = Image::find($id);
-			$image = new VoodooImage(storage_path('image') . '/' . $model->storagefilename);
+			$model = ImageModel::find($id);
+			$image = \Image::make(storage_path('image') . '/' . $model->storagefilename);
 		}
 		else
 		{
 			$path = $req->input('path');
 
-			$image = new VoodooImage(storage_path() . $path);
+			$image = \Image::make(storage_path() . $path);
 		}
-		$resizer = new Resizer($image);
 		if (!$width && !$height)
 		{
-			$resizer->setHeight(200);
+			$image->heighten(200);
 		}
 		elseif ($width)
 		{
-			$resizer->setWidth($width);
+			$image->widen($width);
 		}
 		else
 		{
-			$resizer->setHeight($height);
+			$image->heighten($height);
 		}
 
-		$resizer->make()->output();
+		return $image->response();
 	}
 
 	function uploadAction(Request $req)
@@ -67,7 +70,7 @@ class ImageController extends BaseController
 			$imgName = $file->getClientOriginalName();
 			$ext = $file->getClientOriginalExtension();
 			$storename = md5($imgName) . '.' . $ext;
-			$image = Image::create([
+			$image = ImageModel::create([
 					'storagefilename' => $storename,
 					'name' => $imgName,
 					'originalname' => $imgName,
@@ -106,10 +109,9 @@ class ImageController extends BaseController
 	{
 		$height = $req->input('h', false);
 		$model = Meme::find($id);
-		$image = new VoodooImage(storage_path('memes') . '/' . $model->filename);
-		$resizer = new Resizer($image);
-		$resizer->setHeight($height);
-		$resizer->make()->output();
+		$image = \Image::make(storage_path('memes') . '/' . $model->filename);
+		$image->heighten($height);
+		return $image->response();;
 	}
 
 	function gallery(Request $req)
@@ -126,8 +128,8 @@ class ImageController extends BaseController
 	{
 		$meme = Meme::find($id);
 		$filepath = storage_path('memes') . '/' . $meme->filename;
-		$image = new VoodooImage($filepath);
-		$image->output();
+		$image = \Image::make($filepath);
+		return $image->response();;
 	}
 
 }

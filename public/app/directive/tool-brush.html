@@ -1,0 +1,34 @@
+<div class="form-group">
+	<label class="control-label">Color</label>
+<div style="width:25px;height:25px;border:1px solid" ng-style="{backgroundColor:'rgb('+tool.color.join(',')+')'}"></div>	
+	<div class="form-group form-inline">
+		<label class="control-label">R:</label>
+		<input type="number" ng-model="tool.color[0]" min="0" max="255"/>
+		<slider-control slider-model="tool.color[0]" slider-min="0" slider-max="255"></slider-control>
+	</div>
+	<div class="form-group form-inline">
+		<label class="control-label">G:</label>
+		<input type="number" ng-model="tool.color[1]" min="0" max="255"/>
+		<slider-control slider-model="tool.color[1]" slider-min="0" slider-max="255"></slider-control>
+	</div>
+	<div class="form-group form-inline">
+		<label class="control-label">B:</label>
+		<input type="number" ng-model="tool.color[2]" min="0" max="255"/>
+		<slider-control slider-model="tool.color[2]" slider-min="0" slider-max="255"></slider-control>
+	</div>
+</div>
+<div class="form-group">
+	<label class="control-label">Brush size</label>
+	<input type="number" ng-model="tool.brush.size"/>
+	<slider-control slider-model="tool.brush.size" slider-min="1" slider-max="255"></slider-control>
+</div>
+<div class="form-group">
+	<label class="control-label">Brush flow</label>
+	<input type="number" ng-model="tool.brush.flow"/>
+	<slider-control slider-model="tool.brush.flow" slider-min="1" slider-max="100"></slider-control>
+</div>
+<div class="form-group">
+	<label class="control-label">Brush hardness</label>
+	<input type="number" ng-model="tool.brush.hardness"/>
+	<slider-control slider-model="tool.brush.hardness" slider-min="1" slider-max="100"></slider-control>
+</div>
