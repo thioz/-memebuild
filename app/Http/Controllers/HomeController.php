@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -16,6 +15,4 @@ class HomeController extends BaseController
 		return view()->make('index.responsive');
 	}
 
-
 }
-

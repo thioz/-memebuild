@@ -26,8 +26,6 @@
             "App\\": "app/"
         },
         "psr-0": {
-				"Voodoo":"vendor/sourcerer/voodoo/src",
-				"PixelFlow":"vendor/sourcerer/pixelflow/src"
         }
     },
     "autoload-dev": {
