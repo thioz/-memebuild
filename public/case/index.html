@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <canvas id="editor" width="600" height="800"></canvas>
+        <script src="js/editor.js"></script>
+        <script>
+            
+             var stage = document.getElementById('editor');
+             var ctx = stage.getContext('2d');
+             
+             var editor = new Editor(stage);
+             var imglayer = new CanvasImg('img/case.png',null,800);
+             var catlayer = new CanvasImg('img/luci.jpg',null,1);
+             editor.addLayer(catlayer,1);
+             editor.addLayer(imglayer,1000);
+             editor.render();
+             
+        </script>
+    </body>
+</html>
